@@ -4,7 +4,13 @@ import Me from "../assets/me.jpg";
 
 export function Navbar() {
   return (
-    <Flex justifyContent={"space-between"} alignItems="center" px={24} py={4}>
+    <Flex
+      justifyContent={"space-between"}
+      alignItems="center"
+      px={10}
+      py={3}
+      borderBottom="1px solid black"
+    >
       <Text fontSize="xl">Aditya's Blog</Text>
       <Box
         as={motion.div}
