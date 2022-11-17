@@ -1,9 +1,7 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import { Flex } from '../../components/flex'
 import { LeftChevron } from '../../components/left_chevron'
-import { BASE_URL } from '../../constants'
-import useSWR from 'swr'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
@@ -16,13 +14,13 @@ function BlogPost() {
   )
 
   return (
-    <div className='dark:bg-graybg dark:text-white min-h-screen'>
+    <div className='dark:bg-graybg dark:text-gray-200 min-h-screen'>
       <div className='m-auto main-body'>
-        <Flex className='justify-between items-center py-5'>
-          <div>
+        <Flex className='justify-between items-center py-5 select-none cursor-pointer'>
+          <div onClick={() => router.back()}>
             <b>
               <Flex className='items-center'>
-                <button className='mr-2' onClick={() => router.back()}>
+                <button className='mr-2'>
                   <LeftChevron />
                 </button>
                 <p>posts</p>
@@ -48,8 +46,10 @@ function BlogPost() {
         {!data ? (
           <div>loading...</div>
         ) : (
-          <div className='content'>
+          <div className='content pb-10'>
             <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+
+            <p className='text-gray-500'>Thank You</p>
           </div>
         )}
       </div>

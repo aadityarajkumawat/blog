@@ -4,14 +4,21 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
+@font-face {
+  font-family: 'meslo';
+  src: url('../public/meslo.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  min-height: 100vh;
+html.dark {
+  background-color: #222;
 }
 
 .main-body {
@@ -26,7 +33,7 @@ body {
 
 .content * {
   margin: 0;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .content h1 {
@@ -38,12 +45,23 @@ body {
   font-size: 18px;
 }
 
-.content pre {
+html.dark .content pre {
   padding: 20px;
   border-radius: 10px;
   background-color: #222;
   color: white;
-  overflow-y: scroll;
+  overflow: hidden;
+  border: 1px solid #858585;
+}
+
+.content pre {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  overflow: hidden;
+  border: 2px solid #858585;
+  font-family: 'meslo';
 }
 
 .content blockquote {

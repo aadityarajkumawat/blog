@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <div className='dark:bg-graybg dark:text-white min-h-screen'>
       <div className='m-auto main-body'>
-        <Flex className='justify-between items-center py-5'>
+        <Flex className='justify-between items-center py-5 cursor-pointer'>
           <div>
             <b>
               {!local.viewMore ? (
