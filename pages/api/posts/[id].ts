@@ -3,6 +3,7 @@ import fs from 'fs'
 import showdown from 'showdown'
 import { MarkdownParser } from '../../../utils/parser'
 import matter from 'gray-matter'
+import path from 'path'
 
 type D = { content: string }
 
@@ -13,7 +14,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<D>) {
   const conv = new showdown.Converter()
 
   const { content } = matter(
-    fs.readFileSync(`blogs/${id}/index.md`, { encoding: 'utf-8' }),
+    fs.readFileSync(path.join(process.cwd(), `blogs/${id}/index.md`), {
+      encoding: 'utf-8',
+    }),
   )
 
   const html = conv.makeHtml(content)

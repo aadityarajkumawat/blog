@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs'
 import { MarkdownParser } from '../../../utils/parser'
 import matter from 'gray-matter'
+import path from 'path'
 
 interface BlogMetaData {
   title: string
@@ -14,7 +15,10 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>,
 ) {
-  const list = fs.readdirSync('blogs', {
+  const blogsPath = path.join(process.cwd(), 'blogs')
+  console.log(blogsPath)
+
+  const list = fs.readdirSync(blogsPath, {
     encoding: 'utf-8',
     withFileTypes: false,
   })
@@ -22,7 +26,10 @@ export default function handler(
   const blogData: Array<BlogMetaData> = []
 
   list.map((id) => {
-    const file = fs.readFileSync(`blogs/${id}/index.md`, { encoding: 'utf-8' })
+    const file = fs.readFileSync(
+      path.join(process.cwd(), `blogs/${id}/index.md`),
+      { encoding: 'utf-8' },
+    )
     const d = matter(file)
     blogData.push(d.data as BlogMetaData)
   })

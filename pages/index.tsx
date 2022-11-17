@@ -3,6 +3,7 @@ import { Flex } from '../components/flex'
 import { LeftChevron } from '../components/left_chevron'
 import { Post } from '../components/post'
 import { BASE_URL } from '../constants'
+import useSWR from 'swr'
 
 interface BlogMetaData {
   title: string
@@ -11,40 +12,42 @@ interface BlogMetaData {
 }
 
 interface HomeLocalState {
-  posts: Array<BlogMetaData>
-  loading: boolean
   viewMore: boolean
   colorMode: 'light' | 'dark'
 }
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
 export default function Home() {
   const [local, setLocal] = useState<HomeLocalState>({
-    posts: [],
-    loading: false,
     viewMore: false,
     colorMode: 'light',
   })
+
+  const { data, error } = useSWR<Array<BlogMetaData>>('/api/posts/all', fetcher)
+
+  console.log(data)
 
   function updateState(update: Partial<HomeLocalState>) {
     setLocal((l) => ({ ...l, ...update }))
   }
 
   useEffect(() => {
-    async function ae() {
-      updateState({ loading: true })
-      const res = await fetch(`${BASE_URL}/posts/all`)
-      const posts = await res.json()
-      updateState({ loading: false, posts })
-    }
+    // async function ae() {
+    //   updateState({ loading: true })
+    //   const res = await fetch(`${BASE_URL}/posts/all`)
+    //   const posts = await res.json()
+    //   updateState({ loading: false, posts })
+    // }
 
     function getColorMode(): 'light' | 'dark' {
       // @ts-ignore
       return window.localStorage.getItem('theme') || 'dark'
     }
 
-    ae()
+    // ae()
     updateState({ colorMode: getColorMode() })
-  }, [])
+  }, [data])
 
   return (
     <div className='dark:bg-graybg dark:text-white min-h-screen'>
@@ -98,11 +101,11 @@ export default function Home() {
         <div className='my-5'>
           <p>Posts</p>
         </div>
-        {local.loading ? (
+        {!data ? (
           <div>loading...</div>
         ) : (
           <div>
-            {local.posts.map((p, i) => (
+            {data.map((p, i) => (
               <Post key={i} title={p.title} date={p.date} slug={p.slug} />
             ))}
           </div>
