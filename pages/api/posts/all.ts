@@ -22,7 +22,7 @@ export default function handler(
   const blogData: Array<BlogMetaData> = []
 
   list.map((id) => {
-    const file = fs.readFileSync(`blogs/${id}`, { encoding: 'utf-8' })
+    const file = fs.readFileSync(`blogs/${id}/index.md`, { encoding: 'utf-8' })
     const d = matter(file)
     blogData.push(d.data as BlogMetaData)
   })

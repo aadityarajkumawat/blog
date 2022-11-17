@@ -103,7 +103,7 @@ export default function Home() {
         ) : (
           <div>
             {local.posts.map((p, i) => (
-              <Post key={i} title={p.title} date={p.date} />
+              <Post key={i} title={p.title} date={p.date} slug={p.slug} />
             ))}
           </div>
         )}
