@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
+import useSWR from 'swr'
 import { Flex } from '../components/flex'
 import { LeftChevron } from '../components/left_chevron'
 import { Post } from '../components/post'
-import { BASE_URL } from '../constants'
-import useSWR from 'swr'
 
 interface BlogMetaData {
   title: string
@@ -11,9 +10,11 @@ interface BlogMetaData {
   date: string
 }
 
+type ColorScheme = 'light' | 'dark'
+
 interface HomeLocalState {
   viewMore: boolean
-  colorMode: 'light' | 'dark'
+  colorMode: ColorScheme
 }
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
@@ -24,28 +25,16 @@ export default function Home() {
     colorMode: 'light',
   })
 
-  const { data, error } = useSWR<Array<BlogMetaData>>('/api/posts/all', fetcher)
-
-  console.log(data)
+  const { data } = useSWR<Array<BlogMetaData>>('/api/posts/all', fetcher)
 
   function updateState(update: Partial<HomeLocalState>) {
     setLocal((l) => ({ ...l, ...update }))
   }
 
   useEffect(() => {
-    // async function ae() {
-    //   updateState({ loading: true })
-    //   const res = await fetch(`${BASE_URL}/posts/all`)
-    //   const posts = await res.json()
-    //   updateState({ loading: false, posts })
-    // }
-
-    function getColorMode(): 'light' | 'dark' {
-      // @ts-ignore
-      return window.localStorage.getItem('theme') || 'dark'
+    function getColorMode(): ColorScheme {
+      return (window.localStorage.getItem('theme') as ColorScheme) || 'dark'
     }
-
-    // ae()
     updateState({ colorMode: getColorMode() })
   }, [data])
 

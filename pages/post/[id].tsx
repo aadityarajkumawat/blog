@@ -3,37 +3,17 @@ import { useEffect, useState } from 'react'
 import { Flex } from '../../components/flex'
 import { LeftChevron } from '../../components/left_chevron'
 import { BASE_URL } from '../../constants'
+import useSWR from 'swr'
 
-const localState = {
-  loading: false,
-}
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
-type LocalState = typeof localState
-
-function BlogPost(props: any) {
+function BlogPost() {
   const router = useRouter()
 
-  const [html, setHtml] = useState<string>('<p>loading...</p>')
-  const [local, setLocal] = useState<LocalState>({ ...localState })
-
-  function updateState(update: Partial<LocalState>) {
-    setLocal((l) => ({ ...l, ...update }))
-  }
-
-  useEffect(() => {
-    async function ae() {
-      if (!router.isReady) return
-
-      updateState({ loading: true })
-      const slug = router.query.id
-      const res = await fetch(`${BASE_URL}/posts/${slug}`)
-      const { content } = await res.json()
-      setHtml(content)
-      updateState({ loading: false })
-    }
-
-    ae()
-  }, [router.isReady])
+  const { data } = useSWR<{ content: string }>(
+    `/api/posts/${router.query.id}`,
+    fetcher,
+  )
 
   return (
     <div className='dark:bg-graybg dark:text-white min-h-screen'>
@@ -65,11 +45,11 @@ function BlogPost(props: any) {
           </button>
         </Flex>
 
-        {local.loading ? (
+        {!data ? (
           <div>loading...</div>
         ) : (
           <div className='content'>
-            <div dangerouslySetInnerHTML={{ __html: html }}></div>
+            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
           </div>
         )}
       </div>
