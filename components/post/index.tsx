@@ -15,7 +15,7 @@ export function Post(props: PostProps) {
       <Flex className='flex-col mb-5 rounded-md'>
         <div className='flex w-full h-72 bg-gray-300 rounded-md mb-1 border-2 border-gray-500'>
           <img
-            className='rounded-md'
+            className='rounded-md m-auto'
             src={`/blogs/${props.slug}/${props.thumbnail}.png`}
             alt=''
           />
