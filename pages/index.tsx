@@ -8,6 +8,7 @@ interface BlogMetaData {
   title: string
   slug: string
   date: string
+  thumbnail: string
 }
 
 type ColorScheme = 'light' | 'dark'
@@ -30,6 +31,8 @@ export default function Home() {
   function updateState(update: Partial<HomeLocalState>) {
     setLocal((l) => ({ ...l, ...update }))
   }
+
+  console.log(data)
 
   useEffect(() => {
     function getColorMode(): ColorScheme {
@@ -59,9 +62,9 @@ export default function Home() {
               )}
             </b>
           </div>
-          <button>
+          <button className='active:scale-[0.95] hover:scale-[0.97] border-2 border-gray-200 rounded-md'>
             <div
-              className='p-4 border-2 border-gray-200 rounded-md'
+              className='p-4'
               onClick={() => {
                 if (localStorage.getItem('theme') === 'light') {
                   localStorage.setItem('theme', 'dark')
@@ -95,7 +98,13 @@ export default function Home() {
         ) : (
           <div>
             {data.map((p, i) => (
-              <Post key={i} title={p.title} date={p.date} slug={p.slug} />
+              <Post
+                key={i}
+                title={p.title}
+                date={p.date}
+                slug={p.slug}
+                thumbnail={p.thumbnail}
+              />
             ))}
           </div>
         )}
