@@ -1,25 +1,35 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import fs from 'fs'
-import showdown from 'showdown'
-import { MarkdownParser } from '../../../utils/parser'
-import matter from 'gray-matter'
-import path from 'path'
+import fs from "fs";
+import matter from "gray-matter";
+import { MongoClient } from "mongodb";
+import type { NextApiRequest, NextApiResponse } from "next";
+import path from "path";
+import showdown from "showdown";
 
-type D = { content: string }
+type D = { content: string };
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<D>) {
-  const { id } = req.query
-  if (!id) throw new Error('id not found')
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<D>
+) {
+  const { id } = req.query;
+  if (!id) throw new Error("id not found");
 
-  const conv = new showdown.Converter()
+  const { location } = req.body;
+
+  const conv = new showdown.Converter();
 
   const { content } = matter(
     fs.readFileSync(path.join(process.cwd(), `blogs/${id}/index.md`), {
-      encoding: 'utf-8',
-    }),
-  )
+      encoding: "utf-8",
+    })
+  );
 
-  const html = conv.makeHtml(content)
+  const client = new MongoClient(process.env.MONGO_URI as string);
+  const blog = client.db("blog").collection("posts");
 
-  res.json({ content: html })
+  await blog.insertOne({ route: `/${id}`, hitAt: new Date(), location });
+
+  const html = conv.makeHtml(content);
+
+  res.json({ content: html });
 }
