@@ -6,34 +6,74 @@ import { LeftChevron } from "../../components/left_chevron";
 function BlogPost() {
   const router = useRouter();
   const [blogData, setBlogData] = useState<{ content: string } | null>(null);
-  const [location, setLocation] = useState<any>(null);
-
-  // navigator.geolocation.getCurrentPosition((p) => {
-  //   p.coords;
-  // });
-
-  // const { data } = useSWR<{ content: string }>(
-  //   `/api/posts/${router.query.id}`,
-  //   fetcher
-  // );
 
   async function getData() {
     if (!router.query.id) return;
-    const res = await fetch(`/api/posts/${router.query.id}`, {
+    const res = await fetch(`/api/posts/${router.query.id}`);
+    const data = await res.json();
+    setBlogData(data);
+  }
+
+  async function registerAView() {
+    if (!router.query.id) return;
+    await fetch("/api/hit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         location: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        id: router.query.id,
       }),
     });
-    const data = await res.json();
-    setBlogData(data);
+
+    let meta = localStorage.getItem("edyy_blog_meta");
+
+    localStorage.setItem(
+      "edyy_blog_meta",
+      JSON.stringify({
+        [router.query.id as string]: { timestamp: new Date().getTime() },
+        ...(meta ? JSON.parse(meta) : {}),
+      })
+    );
   }
 
   useEffect(() => {
-    getData();
+    async function as() {
+      await getData();
+
+      setTimeout(async () => {
+        let meta = localStorage.getItem("edyy_blog_meta");
+
+        if (!meta) {
+          await registerAView();
+          return;
+        }
+        const metaValue = JSON.parse(meta);
+        if (!metaValue[router.query.id as string]) {
+          localStorage.setItem(
+            "edyy_blog_meta",
+            JSON.stringify({
+              [router.query.id as string]: { timestamp: new Date().getTime() },
+              ...(meta ? JSON.parse(meta) : {}),
+            })
+          );
+        }
+        // if the view is older than 20 mins, we register a new view
+        const moreThan20Mins =
+          new Date().getTime() -
+            Number(metaValue[router.query.id as string].timestamp) >
+          1000 * 60 * 20;
+        if (moreThan20Mins) {
+          await registerAView();
+        } else {
+          console.log("Check back later for a view");
+        }
+        // if a user stays more than 10 seconds on a post, register that as a view
+      }, 10000);
+    }
+
+    as();
   }, [router.query.id]);
 
   return (

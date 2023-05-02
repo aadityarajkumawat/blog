@@ -27,6 +27,19 @@ export default function Home() {
 
   const [data, setData] = useState<any>(null);
 
+  async function registerAView() {
+    await fetch("/api/hit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        location: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        id: "root",
+      }),
+    });
+  }
+
   useEffect(() => {
     async function as() {
       const res = await fetch("/api/posts/all", {
@@ -42,6 +55,8 @@ export default function Home() {
       console.log(data);
 
       setData(data);
+
+      await registerAView();
     }
     as();
   }, []);
@@ -49,8 +64,6 @@ export default function Home() {
   function updateState(update: Partial<HomeLocalState>) {
     setLocal((l) => ({ ...l, ...update }));
   }
-
-  console.log(data);
 
   useEffect(() => {
     function getColorMode(): ColorScheme {
