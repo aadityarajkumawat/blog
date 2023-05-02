@@ -6,6 +6,7 @@ import { LeftChevron } from "../../components/left_chevron";
 function BlogPost() {
   const router = useRouter();
   const [blogData, setBlogData] = useState<{ content: string } | null>(null);
+  const [mouseDown, setMouseDown] = useState(false);
 
   async function getData() {
     if (!router.query.id) return;
@@ -36,6 +37,20 @@ function BlogPost() {
         ...(meta ? JSON.parse(meta) : {}),
       })
     );
+  }
+
+  async function like() {
+    if (!router.query.id) return;
+    await fetch("/api/like", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: router.query.id,
+        location: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      }),
+    });
   }
 
   useEffect(() => {
@@ -74,6 +89,35 @@ function BlogPost() {
     }
 
     as();
+
+    document.addEventListener("mousemove", (e) => {
+      const leoclap = document.getElementById("leoclap");
+      if (!leoclap) return;
+
+      const delX = e.clientX - leoclap.getBoundingClientRect().x - 40;
+      const delY = e.clientY - leoclap.getBoundingClientRect().y - 40;
+
+      const distance = Math.sqrt(delX * delX + delY * delY);
+
+      const MAX_SCALE = 2;
+      const MIN_SCALE = 1;
+
+      const scale = 400 / distance;
+
+      console.log(scale, distance);
+
+      const getScale = () => {
+        if (scale > MAX_SCALE) return MAX_SCALE;
+        if (scale < MIN_SCALE) return MIN_SCALE;
+        return scale;
+      };
+
+      if (distance < 400) {
+        leoclap.style.scale = `${getScale()}`;
+      } else {
+        leoclap.style.scale = "1";
+      }
+    });
   }, [router.query.id]);
 
   return (
@@ -109,22 +153,41 @@ function BlogPost() {
         {!blogData ? (
           <div>loading...</div>
         ) : (
-          <div className="content pb-10">
-            <div dangerouslySetInnerHTML={{ __html: blogData.content }}></div>
+          <div className="content pb-10 relative">
+            <div
+              dangerouslySetInnerHTML={{ __html: blogData.content }}
+              className="pb-[100px]"
+            ></div>
 
-            <div className="flex items-center justify-center gap-5 border-t border-zinc-400 py-5">
+            <button
+              onClick={async () => {
+                await like();
+              }}
+              onMouseDown={() => setMouseDown(true)}
+              onMouseUp={() => setMouseDown(false)}
+              id="leoclap"
+              className="m-auto relative rounded-full transition-all"
+              style={{
+                border: mouseDown ? "5px solid white" : "none",
+                zIndex: 999,
+              }}
+            >
+              <img src="/clap.gif" className="!w-[80px] !rounded-full !m-0" />
+            </button>
+
+            <div className="flex items-end w-full justify-center gap-5 border-t border-zinc-400 py-5 absolute bottom-0">
               <a
                 href="https://twitter.com/Aaditya86763230"
-                className="bg-blue-400 text-white px-3 py-1 rounded-md"
+                className="text-white px-3 py-1 rounded-md"
               >
-                Twitter
+                <img src="/twitter.png" alt="" style={{ width: 40 }} />
               </a>
 
               <a
                 href="https://youtube.com/@edyd1"
-                className="bg-red-600 px-3 py-1 rounded-md text-white"
+                className="px-3 py-1 rounded-md text-white"
               >
-                Youtube
+                <img src="/youtube.png" alt="" style={{ width: 40 }} />
               </a>
             </div>
           </div>

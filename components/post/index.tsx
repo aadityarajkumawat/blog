@@ -13,13 +13,13 @@ export function Post(props: PostProps) {
   return (
     <div onClick={() => router.push(`/post/${props.slug}`)}>
       <Flex className="flex-col mb-5 rounded-md">
-        <div className="flex w-full h-[350px] bg-gray-300 rounded-md mb-1 border-2 border-gray-500">
-          <img
-            className="rounded-md m-auto h-full"
-            src={`/blogs/${props.slug}/${props.thumbnail}.png`}
-            alt=""
-          />
-        </div>
+        {/* <div className="flex w-full h-[350px] bg-gray-300 rounded-md mb-1 border-2 border-gray-500"> */}
+        <img
+          className="rounded-md m-auto h-full border border-zinc-600 w-full"
+          src={`/blogs/${props.slug}/${props.thumbnail}.png`}
+          alt=""
+        />
+        {/* </div> */}
         <Flex className="flex-col select-none">
           <p>{props.title}</p>
           <p className="text-sm mt-1">{props.date}</p>

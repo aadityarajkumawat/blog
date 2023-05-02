@@ -121,3 +121,7 @@ html.dark .content pre {
   height: 100%;
   background: #979797;
 }
+
+button.lepclap img {
+  transition: all 0.2s linear;
+}

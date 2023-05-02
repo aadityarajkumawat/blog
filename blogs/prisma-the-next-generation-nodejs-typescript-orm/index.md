@@ -1,8 +1,9 @@
 ---
-title: 'Prisma: The Next-generation NodeJS-Typescript ORM'
-slug: 'prisma-the-next-generation-nodejs-typescript-orm'
-date: '26/11/2022'
-thumbnail: 'prisma-orm-1'
+title: "Prisma: The Next-generation NodeJS-Typescript ORM"
+slug: "prisma-the-next-generation-nodejs-typescript-orm"
+date: "26/11/2022"
+thumbnail: "prisma-orm-1"
+index: 1
 ---
 
 # Prisma: The Next-generation NodeJS-Typescript ORM

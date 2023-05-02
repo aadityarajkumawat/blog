@@ -3,6 +3,7 @@ title: "Kickstart your development career using Replit Bounties"
 slug: "replit-bounty"
 date: "02/05/2023"
 thumbnail: "kickstart-replit-bounty"
+index: 2
 ---
 
 # Kickstart your development career using Replit Bounties

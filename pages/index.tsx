@@ -17,8 +17,6 @@ interface HomeLocalState {
   colorMode: ColorScheme;
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export default function Home() {
   const [local, setLocal] = useState<HomeLocalState>({
     viewMore: false,
@@ -128,15 +126,17 @@ export default function Home() {
           <div>loading...</div>
         ) : (
           <div>
-            {data.map((p: any, i: number) => (
-              <Post
-                key={i}
-                title={p.title}
-                date={p.date}
-                slug={p.slug}
-                thumbnail={p.thumbnail}
-              />
-            ))}
+            {data
+              .sort((a: any, b: any) => b.index - a.index)
+              .map((p: any, i: number) => (
+                <Post
+                  key={i}
+                  title={p.title}
+                  date={p.date}
+                  slug={p.slug}
+                  thumbnail={p.thumbnail}
+                />
+              ))}
           </div>
         )}
 
