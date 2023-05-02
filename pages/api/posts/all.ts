@@ -1,6 +1,5 @@
 import fs from "fs";
 import matter from "gray-matter";
-import { MongoClient } from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 
@@ -23,8 +22,6 @@ export default async function handler(
     withFileTypes: false,
   });
 
-  const { location } = req.body;
-
   const blogData: Array<BlogMetaData> = [];
 
   list.map((id) => {
@@ -35,11 +32,5 @@ export default async function handler(
     const d = matter(file);
     blogData.push(d.data as BlogMetaData);
   });
-
-  const client = new MongoClient(process.env.MONGO_URI as string);
-  const blog = client.db("blog").collection("posts");
-
-  await blog.insertOne({ route: `/`, hitAt: new Date(), location });
-
   res.send(blogData);
 }
