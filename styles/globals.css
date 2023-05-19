@@ -131,6 +131,5 @@ ol li ol li {
 }
 
 .content a {
-  color: #a3c3f3;
-  font-weight: bold;
+  text-decoration: underline;
 }
