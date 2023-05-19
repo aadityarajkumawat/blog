@@ -125,3 +125,12 @@ html.dark .content pre {
 button.lepclap img {
   transition: all 0.2s linear;
 }
+
+ol li ol li {
+  margin-bottom: 5px !important;
+}
+
+.content a {
+  color: #a3c3f3;
+  font-weight: bold;
+}
