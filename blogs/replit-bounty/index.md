@@ -1,5 +1,6 @@
 ---
 title: "Kickstart your development career using Replit Bounties"
+description: In the ever-evolving landscape of the tech industry, opportunities for growth and skill development are abundant. One such opportunity is the Replit Bounties platform, which offers developers a unique way to collaborate on projects, expand their skill sets, and even earn some extra
 slug: "replit-bounty"
 date: "02/05/2023"
 thumbnail: "kickstart-replit-bounty"

@@ -1,5 +1,6 @@
 ---
 title: "Prisma: The Next-generation NodeJS-Typescript ORM"
+description: I have been using various NodeJS ORMs' for a while now, but it was not until I tried prisma, things felt natural, the workflow that it build through is just something amazing and so simple, I am total prisma fan, the best part that I like about prisma is the way you query data, its the
 slug: "prisma-the-next-generation-nodejs-typescript-orm"
 date: "26/11/2022"
 thumbnail: "prisma-orm-1"

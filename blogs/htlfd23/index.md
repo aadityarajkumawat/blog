@@ -1,5 +1,6 @@
 ---
 title: "How to Learn Frontend Development (2023 Guide)"
+description: I'm often asked, "How do I learn web development?". So in this blog, I focus on guiding you through the whole process of learning. And, before getting started, let me tell you if this is the beginning of a new journey for you, you are going to enter some really precious years of your life that are gonna shape your entire career and make you a f-ing tech lead.
 slug: "htlfd23"
 date: "19/05/2023"
 thumbnail: "front-end-developer"

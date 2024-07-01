@@ -70,8 +70,10 @@ export default function Home() {
     updateState({ colorMode: getColorMode() });
   }, [data]);
 
+  console.log({ local });
+
   return (
-    <div className="dark:bg-graybg dark:text-white min-h-screen">
+    <div className="dark:bg-graybg dark:text-white min-h-screen transition-all">
       <div className="m-auto main-body">
         <Flex className="justify-between items-center py-5 cursor-pointer">
           <div>
@@ -98,9 +100,11 @@ export default function Home() {
                 if (localStorage.getItem("theme") === "light") {
                   localStorage.setItem("theme", "dark");
                   document.documentElement.classList.add("dark");
+                  setLocal({ ...local, colorMode: "dark" });
                 } else {
                   localStorage.setItem("theme", "light");
                   document.documentElement.classList.remove("dark");
+                  setLocal({ ...local, colorMode: "light" });
                 }
               }}
             ></div>
@@ -116,12 +120,9 @@ export default function Home() {
               applying them.
             </p>
             <br />
-            <p>talking in typescript feels like second nature to me.</p>
           </div>
         )}
-        <div className="my-5">
-          <p>Posts</p>
-        </div>
+        <div className="my-5"></div>
         {!data ? (
           <div>loading...</div>
         ) : (
@@ -134,6 +135,7 @@ export default function Home() {
                   title={p.title}
                   date={p.date}
                   slug={p.slug}
+                  description={p.description}
                   thumbnail={p.thumbnail}
                 />
               ))}
