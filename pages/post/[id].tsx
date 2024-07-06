@@ -25,6 +25,7 @@ function BlogPost() {
       body: JSON.stringify({
         location: Intl.DateTimeFormat().resolvedOptions().timeZone,
         id: router.query.id,
+        env: window.location.href.includes("localhost") ? "dev" : "prod",
       }),
     });
 
@@ -37,20 +38,6 @@ function BlogPost() {
         ...(meta ? JSON.parse(meta) : {}),
       })
     );
-  }
-
-  async function like() {
-    if (!router.query.id) return;
-    await fetch("/api/like", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: router.query.id,
-        location: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      }),
-    });
   }
 
   useEffect(() => {
@@ -158,22 +145,6 @@ function BlogPost() {
               dangerouslySetInnerHTML={{ __html: blogData.content }}
               className="pb-[100px]"
             ></div>
-
-            <button
-              onClick={async () => {
-                await like();
-              }}
-              onMouseDown={() => setMouseDown(true)}
-              onMouseUp={() => setMouseDown(false)}
-              id="leoclap"
-              className="m-auto relative rounded-full transition-all"
-              style={{
-                border: mouseDown ? "5px solid white" : "none",
-                zIndex: 999,
-              }}
-            >
-              <img src="/clap.gif" className="!w-[80px] !rounded-full !m-0" />
-            </button>
 
             <div className="flex items-end w-full justify-center gap-5 border-t border-zinc-400 py-5 absolute bottom-0">
               <a

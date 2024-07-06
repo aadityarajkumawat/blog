@@ -5,12 +5,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const client = new MongoClient(process.env.MONGO_URI as string);
+  const client = new MongoClient(process.env.MONGO_URI as string, {});
   const blog = client.db("blog").collection("views");
 
-  const { id, location } = req.body;
+  const { id, location, env } = req.body;
 
-  await blog.insertOne({ route: `/${id}`, hitAt: new Date(), location });
+  await blog.insertOne({ route: `/${id}`, hitAt: new Date(), location, env });
 
   res.json({ status: "ok" });
 }
